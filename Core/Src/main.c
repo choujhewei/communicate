@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ps4_parser.h"
+#include "stm32f4xx_it.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,21 +99,20 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART3_UART_Init();
+  MX_UART5_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  // 開啟接收中斷
   LL_USART_EnableIT_RXNE(USART3);
-  // 開啟 USART2
   LL_USART_Enable(USART3);
-  // 啟用中斷控制器
+  LL_USART_EnableIT_RXNE(UART5);
+  LL_USART_Enable(UART5);
   NVIC_SetPriority(USART3_IRQn, 0);
   NVIC_EnableIRQ(USART3_IRQn);
-  void send_string(char* str) {
-    while (*str) {
-      LL_USART_TransmitData8(USART2, *str++);
-      while (!LL_USART_IsActiveFlag_TXE(USART2));
-    }
-  }
+  NVIC_SetPriority(UART5_IRQn, 0);
+  NVIC_EnableIRQ(UART5_IRQn);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,6 +122,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
   }
   /* USER CODE END 3 */
 }

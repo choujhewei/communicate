@@ -1,5 +1,7 @@
+"./Core/Src/dma.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"
+"./Core/Src/ps4_parser.o"
 "./Core/Src/stm32f4xx_it.o"
 "./Core/Src/syscalls.o"
 "./Core/Src/sysmem.o"

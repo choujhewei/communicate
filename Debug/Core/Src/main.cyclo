@@ -20,6 +20,6 @@
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h:505:22:LL_PWR_SetRegulVoltageScaling	1
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usart.h:410:22:LL_USART_Enable	1
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usart.h:2035:22:LL_USART_EnableIT_RXNE	2
-../Core/Src/main.c:65:5:main	1
-../Core/Src/main.c:132:6:SystemClock_Config	4
-../Core/Src/main.c:171:6:Error_Handler	1
+../Core/Src/main.c:67:5:main	1
+../Core/Src/main.c:134:6:SystemClock_Config	4
+../Core/Src/main.c:173:6:Error_Handler	1
