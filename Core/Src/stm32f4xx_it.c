@@ -51,9 +51,11 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define RX_BUF_LEN 64
-char rx_buf[RX_BUF_LEN];
-uint8_t rx_index = 0;
+volatile uint8_t rx_data;
+volatile uint16_t rx_index = 0;
+char rx_buffer[RX_BUFFER_SIZE];
+volatile uint8_t data_ready = 0;
+
 #define PACKET_SIZE 9
 uint8_t uart5_rx_buffer[PACKET_SIZE];
 volatile uint8_t uart5_rx_index = 0;
@@ -205,32 +207,6 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 stream5 global interrupt.
-  */
-void DMA1_Stream5_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream5_IRQn 0 */
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream5_IRQn 1 */
-}
-
-/**
-  * @brief This function handles DMA1 stream6 global interrupt.
-  */
-void DMA1_Stream6_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream6_IRQn 0 */
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream6_IRQn 1 */
-}
-
-/**
   * @brief This function handles USART3 global interrupt.
   */
 void USART3_IRQHandler(void)
@@ -240,25 +216,21 @@ void USART3_IRQHandler(void)
   /* USER CODE END USART3_IRQn 0 */
   /* USER CODE BEGIN USART3_IRQn 1 */
 	if (LL_USART_IsActiveFlag_RXNE(USART3) && LL_USART_IsEnabledIT_RXNE(USART3))
-		  {
-		    char c = LL_USART_ReceiveData8(USART3);
-		    if (c == '\n' || rx_index >= RX_BUF_LEN - 1)
-		    {
-		      rx_buf[rx_index] = '\0';
-		      // 回傳整串字
-		      for (uint8_t i = 0; i < rx_index; i++) {
-		        LL_USART_TransmitData8(USART3, rx_buf[i]);
-		        while (!LL_USART_IsActiveFlag_TXE(USART3));
-		      }
-		      LL_USART_TransmitData8(USART3, '\n');
-		      while (!LL_USART_IsActiveFlag_TXE(USART3));
-		      rx_index = 0;
-		    }
-		    else
-		    {
-		      rx_buf[rx_index++] = c;
-		    }
-		  }
+	  {
+	    rx_data = LL_USART_ReceiveData8(USART3);
+
+	    // 檢查是否資料結束（這裡用 \n 當作結尾）
+	    if (rx_data == '\n' || rx_index >= RX_BUFFER_SIZE - 1)
+	    {
+	      rx_buffer[rx_index] = '\0';  // 加上結尾字元
+	      rx_index = 0;
+	      data_ready = 1;  // 設定資料完成旗標
+	    }
+	    else
+	    {
+	      rx_buffer[rx_index++] = rx_data;
+	    }
+	  }
   /* USER CODE END USART3_IRQn 1 */
 }
 

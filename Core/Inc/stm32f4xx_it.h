@@ -28,10 +28,16 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define PACKET_SIZE 9
+#define RX_BUFFER_SIZE 2048
 
 extern uint8_t uart5_rx_buffer[PACKET_SIZE];
 extern volatile uint8_t uart5_rx_index;
 extern volatile uint8_t uart5_packet_ready;
+extern volatile uint8_t rx_data;
+extern volatile uint16_t rx_index;
+extern char rx_buffer[RX_BUFFER_SIZE];
+extern volatile uint8_t data_ready;
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -59,8 +65,6 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
-void DMA1_Stream5_IRQHandler(void);
-void DMA1_Stream6_IRQHandler(void);
 void USART3_IRQHandler(void);
 void UART5_IRQHandler(void);
 /* USER CODE BEGIN EFP */

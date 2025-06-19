@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -26,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "ps4_parser.h"
 #include "stm32f4xx_it.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,7 +71,7 @@ int main(void)
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+//  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,7 +99,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_USART3_UART_Init();
   MX_UART5_Init();
   MX_USART2_UART_Init();
@@ -112,7 +111,7 @@ int main(void)
   NVIC_EnableIRQ(USART3_IRQn);
   NVIC_SetPriority(UART5_IRQn, 0);
   NVIC_EnableIRQ(UART5_IRQn);
-
+  printf ("start\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -122,7 +121,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
+//	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
+	 if (data_ready)
+	  {
+	    data_ready = 0;
+	    printf("Received JSON: %s\n", rx_buffer);
+	  }
   }
   /* USER CODE END 3 */
 }
