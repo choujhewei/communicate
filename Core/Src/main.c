@@ -57,7 +57,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-char* str = "Hello";
+
 /* USER CODE END 0 */
 
 /**
@@ -121,7 +121,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
+	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
 	 if (data_ready)
 	  {
 	    data_ready = 0;

@@ -20,7 +20,6 @@ void process_ps4_packet(uint8_t *packet) {
     uint8_t checksum = (lx + ly + rx + ry + packet[5] + packet[6]) & 0xFF;
 
     if (checksum != packet[7]) return;
-
     char debug_msg[64];
     sprintf(debug_msg, "LX=%d LY=%d RX=%d RY=%d BTN=0x%04X\r\n", lx, ly, rx, ry, buttons);
     for (char *p = debug_msg; *p; p++) {
