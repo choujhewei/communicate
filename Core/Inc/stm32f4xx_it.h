@@ -28,7 +28,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define PACKET_SIZE 9
-#define RX_BUFFER_SIZE 2048
+#define RX_BUFFER_SIZE 1000
 
 extern uint8_t uart5_rx_buffer[PACKET_SIZE];
 extern volatile uint8_t uart5_rx_index;

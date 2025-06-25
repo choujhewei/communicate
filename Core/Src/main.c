@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "ps4_parser.h"
 #include "stm32f4xx_it.h"
+#include "ROS2STM.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -124,8 +125,10 @@ int main(void)
 	loop_check_uart5(uart5_rx_buffer, &uart5_packet_ready);
 	 if (data_ready)
 	  {
-	    data_ready = 0;
-	    printf("Received JSON: %s\n", rx_buffer);
+		LL_mDelay(5000);
+		data_ready = 0;
+		printf("interrupt\r\n");
+	    parse_and_control((char *)rx_buffer);  // 呼叫解析與控制函數
 	  }
   }
   /* USER CODE END 3 */

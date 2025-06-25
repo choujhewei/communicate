@@ -56,7 +56,6 @@ volatile uint16_t rx_index = 0;
 char rx_buffer[RX_BUFFER_SIZE];
 volatile uint8_t data_ready = 0;
 
-#define PACKET_SIZE 9
 uint8_t uart5_rx_buffer[PACKET_SIZE];
 volatile uint8_t uart5_rx_index = 0;
 volatile uint8_t uart5_packet_ready = 0;
@@ -219,8 +218,8 @@ void USART3_IRQHandler(void)
 	  {
 	    rx_data = LL_USART_ReceiveData8(USART3);
 
-	    // 檢查是否資料結束（這裡用 \n 當作結尾）
-	    if (rx_data == '\n' || rx_index >= RX_BUFFER_SIZE - 1)
+	    // 檢查是否資料結束（這裡用 ! 當作結尾）
+	    if (rx_data == '!' || rx_index >= RX_BUFFER_SIZE - 1)
 	    {
 	      rx_buffer[rx_index] = '\0';  // 加上結尾字元
 	      rx_index = 0;
